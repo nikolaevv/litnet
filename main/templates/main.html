@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'image/favicon.ico' %}" type="image/x-icon">
+    <title>Главная</title>
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <script type="text/javascript" src="{% static 'jquery.js' %}"></script>
+</head>
+<body>
+    <noscript>JavaScript is turned off.</noscript>
+    <script type="text/javascript">
+        $(window).scroll(function() {
+            $('slideLeft').each(function(){
+            var imagePos = $(this).offset().top;
+
+            var topOfWindow = $(window).scrollTop();
+                if (imagePos < topOfWindow+400) {
+                    $(this).addClass("slideLeft");
+                }
+            });
+        });
+        
+        var csrf; //Глобальная переменная
+        
+        function showLoading () {
+            show('none', 'registr');
+            show('block', 'loading');
+        }
+        
+        function funcSuccess (data, textStatus, request) {
+            show('none', 'loading');
+            if (data == "True") 
+                show('block', 'verify')
+            else
+                show('block', 'emailAlreadyRegistred')
+        }
+        
+        function checkingCode () {
+            show('none', 'verify');
+            show('block', 'loading');
+        }
+        
+        function successCode (data, textStatus, request) {
+            show('none', 'loading');
+            if (data == "Right") 
+                show('block', 'successReg')
+            else
+                show('block', 'error')
+        }
+        
+        $(document).ready(function () {
+            $(".regButton").bind("click", function () {
+                var nickname = $("#newName").val()
+                var email = $("#newEmail").val()
+                var password = $("#newPassword").val()
+                if (data == "valid") {
+                    $.ajax ({
+                        url: "/check",
+                        type: "POST",
+                        data: ({email: email, nickname: nickname, password: password}),
+                        dataType: "html",
+                        beforeSend: showLoading,
+                        success: funcSuccess
+                        });
+                    data = "invalid";
+                    }
+                });
+            
+            $("#subCodeVerify").bind("click", function () {
+                var code = $("#codVerify").val()
+                if (code != "") {
+                    $.ajax ({
+                        url: "/checkcode",
+                        type: "POST",
+                        data: ({code: code}),
+                        dataType: "html",
+                        beforeSend: checkingCode,
+                        success: successCode
+                        });
+                    }
+                });
+            
+            $("#loginButton").bind("click", function () {
+                var mail = $("#email").val()
+                var password = $("#password").val()
+                if (mail != "" && password != "") {
+                    $.ajax ({
+                        url: "/login",
+                        type: "POST",
+                        data: ({mail: mail, password: password}),
+                        dataType: "html",
+                        beforeSend: checkingCode,
+                        success: successCode
+                        });
+                    }
+                });
+            }); 
+        
+        $('slideLeft').click(function() {
+            $(this).addClass("slideLeft");
+        });
+        
+        function show(state, element) {
+            document.getElementById(element).style.display = state;
+            document.getElementById('gray').style.display = state;
+        }
+        
+        function unshow(elements) {
+            $("."+elements).each(function(element) {
+                $(this).css('display','none');
+            });
+            document.getElementById('gray').style.display = "none";
+        }
+        
+        var data;
+        
+        function valid(form) {
+            var fail = false;
+            var name = form.newName.value;
+            var email = form.newEmail.value;
+            var password = form.newPassword.value;
+            var checkPassword = form.rePassword.value;
+            
+            var adr_pattern = /@/;
+            
+            if(name == '')
+                fail = 'Вы не ввели своё имя';
+            
+            else if(adr_pattern.test(email) == false)
+                fail = 'Вы ввели неверную электронную почту';
+            
+            else if(password == '')
+                fail = 'Вы не ввели пароль';
+            
+            else if(password != checkPassword)
+                fail = 'Пароли не совпадают';
+            
+            if(fail) {
+                alert(fail);
+                return false;
+                data = "invalid";
+            }
+            
+            else {
+                data = "valid";
+            }
+        }
+    </script>
+    <div class="csrf">
+        <span id="tokenCsrf">{% csrf_token %}</span>
+    </div>
+    <header>
+        <div class="container">
+            <div class="heading clearfix">
+                <a href="#">
+                    <img href="#" src="{% static 'image/logo.png' %}" class="logo" alt="LitNet">
+                </a>
+                <nav>
+                <ul class="menu">
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#">Загрузка</a></li>
+                    <li><a onclick="show('block', 'loading')" href="#">Книги</a></li>
+                    <li><a onclick="show('block', 'login')" href="#">Вход</a></li>
+                </ul>
+                </nav>
+            </div>
+            <div class="hello slideLeft">
+                <span class="welcome">Добро пожаловать на ЛитНет!</span>
+                <br>
+                <br>
+                <span class="invite">Присоединяйтесь к многотысячному сообществу прямо сейчас</span>
+            </div>
+            <div class="buttonsMain">
+                <button onclick="show('block', 'registr')" class="buttonRegistr slideLeft">Регистрация</button>
+                <button onclick="show('block', 'login')" class="buttonLogin slideLeft">Авторизация</button>
+            </div>
+        </div>
+        <div id="gray" onclick="unshow('show')"></div>
+    </header>
+    <br>   
+    <div class="container blockAbout">
+        <center><span id="howItWorks">Сервисы</span></center>
+        <p id="pHow">Как это работает?</p>
+
+        <div class="services clearfix">
+            <div class="servicesItem">
+                <img class="serviceImage pulse" src="{% static 'image/pdf.png' %}" alt="Услуга">
+                <h3>Скачивайте</h3>
+                <p>Скачивайте книгу в 
+                любом удобном для вас формате (PDF, mobi, FB2, RTF)</p>
+            </div>
+
+            <div class="servicesItem">
+                <img class="serviceImage pulse" src="{% static 'image/banknote.png' %}" alt="Услуга">
+                <h3>Загружайте</h3>
+                <p>Добавляйте книги, продвигайте их с помощью внутренних инструментов и получайте деньги за скачивания</p>
+            </div>
+
+            <div class="servicesItem">
+                <img class="serviceImage pulse" src="{% static 'image/social.png' %}" alt="Услуга">
+                <h3>Делитесь</h3>
+                <p>Приглашайте друзей по своему рефереалу и получайте спецпредложения от нашего сайта</p>
+            </div>
+
+        </div>
+    </div>
+    
+    <div id="registr" class="show container registr">
+        <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'registr')" alt="">
+        <div class="formRegistr">
+            <h3>Регистрация</h3>
+            <form method="post" action="" id="registrForm" name="registr">
+                <input id="newName" class="input" name="newName" type="text" placeholder="Имя" />
+
+                <input id="newEmail" class="input" name="newEmail" type="text" placeholder="Электронная почта" />
+
+                <input id="newPassword" class="input" name="newPassword" type="password" placeholder="Пароль" />
+
+                <input id="rePassword" class="input" name="rePassword" type="password" placeholder="Повторите пароль" />
+
+                <input id="regButton" type="button" class="regButton" onclick="valid(document.getElementById('registrForm')); " value="Зарегистрироваться" />
+            </form>
+            <p>Нажимая кнопку "Зарегистрироваться", вы подтверждаете, что прочитали и согласны с нашими Условиями использования и Политикой конфидециальности</p>
+        </div>
+    </div>
+    
+    <div id="login" class="show container login">
+        <img class="close" src="{% static 'image/close.png' %} " onclick="show('none', 'login')" alt="">
+        <div class="formLogin">
+            <h3>Авторизация</h3>
+            <form name="login">
+            
+                <input id="email" class="input" name="email" type="text" placeholder="Электронная почта">
+
+                <input id="password" class="input" name="password" type="password" placeholder="Пароль">
+                <span>Нет аккаунта? <a href="#" onclick="show('none', 'login'); show('block', 'registr');">Зарегистрироваться</a></span>
+                <input id="loginButton" type="button" class="loginButton" value="Войти" />
+            </form>
+        </div>
+    </div>
+    
+    <div id="verify" class="verify">
+        {% csrf_token %}
+        <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'verify')" alt="">
+        <div class="formVerify">
+            <h3>Подтверждение электронной почты</h3>
+            <p>Вам отправлен email-пароль</p>
+            <form method="post" action="" name="verify">
+            
+                <input id="codVerify" class="input" name="codVerify" type="text" placeholder="EMail-пароль">
+
+                <button id="subCodeVerify" class="loginButton" type="button">Подтвердить</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="loading" class="loading container">
+        <img class="loadingGif" src="{% static 'image/loading.gif' %}" alt="">
+    </div>
+    
+    <div id="emailAlreadyRegistred" class="container emailAlreadyRegistred">
+        <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'emailAlreadyRegistred')" alt="">
+        <img class="error" src="{% static 'image/error.png' %}" alt="">
+        <h3>Выбранная элекронная почта уже привязана к аккаунту</h3>
+        <p>Попроуйте выбрать другую</p>
+    </div>
+    
+    <div id="error" class="container emailAlreadyRegistred">
+        <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'error')" alt="">
+        <img class="error" src="{% static 'image/error.png' %}" alt="">
+        <h3>Что-то пошло не так...</h3>
+        <p>Попроуйте снова</p>
+    </div>
+    
+    <div id="successReg" class="container">
+        <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'successReg')" alt="">
+        <img class="success" src="{% static 'image/success.png' %}" alt="">
+        <h3>Вы успешно зарегистрированы</h3>
+        <p>Вы можете пройти к просмотру книг</p>
+        <button href="/books" id="profileButton" class="loginButton">Перейти</button>
+    </div>
+    
+    <div class="container rights">
+        © 2019 Все права защищены, LitNet
+    </div>
+</body>
+</html>

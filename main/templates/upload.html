@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <script type="text/javascript" href="JavaScript.js"></script>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Загрузка</title>
+</head>
+<body>
+    <div class="shortHeader">
+        <div class="container">
+            <div class="heading clearfix">
+                <a href="#">
+                    <img src="images/logo.png" class="logo" alt="LitNet">
+                </a>
+                <nav>
+                <ul class="menu">
+                    <li><a href="#">Главная</a></li>
+                    <li><a href="#">Загрузка</a></li>
+                    <li><a href="#">Книги</a></li>
+                    <li><a href="#">Вход</a></li>
+                </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="container uploadBook">
+        <h3>Загрузка книг</h3>
+        <form name="upload">
+            <input id="newBookname" class="inputUpload" name="newBookname" type="text" placeholder="Название книги">
+
+            <input id="newAuthor" class="inputUpload" name="newAuthor" type="text" placeholder="Автор">
+            
+            <textarea id="newDesc" class="inputUpload" name="newDesc" type="text" placeholder="Описание произведения"></textarea>
+            
+            <span>Выберите формат:</span>
+            <div class="styles">
+                <select name="newFormat">
+                    <option>PDF</option>
+                    <option>Mobi</option>
+                    <option>FB2</option>
+                    <option>RTF</option>
+                </select>
+            </div>
+            
+            <label for="newAuthorPhoto">Фото автора</label>
+            <input id="newAuthorPhoto" name="authorPhoto" type="file">
+            <br>
+            
+            <label for="newBook">Книга</label>
+            <input id="newBook" name="newBook" type="file">
+            
+            <input id="upButton" type="submit" value="Загрузить">
+        </form>
+        <p>Нажимая кнопку "Загрузить", вы подтверждаете, что ознакомились с Регламентом загрузки книг</p>
+    </div>
+    <div class="container rights">
+        © 2019 Все права защищены, LitNet
+    </div>
+</body>

@@ -1,0 +1,568 @@
+body {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    font-family: sans-serif;
+}
+
+.clearfix:after {
+    content: '';
+    display: table;
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    color: darkgrey;
+    text-decoration: none; 
+}
+
+header {
+    background: url(../image/landscape.png) no-repeat center top / cover;
+    height: 600px;
+}
+
+.shortHeader {
+    height: 90px;
+    background-color: dimgray;
+}
+
+.container {
+    width: 58em;
+    margin: 0 auto;
+}
+
+.logo {
+    margin-top: 1.1em;
+    width: 12em;
+    float: left;
+}
+
+nav {
+    float: right;
+    margin-top: 1.7em;
+}
+
+.hello {
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    color: #fff;
+    margin-top: 9.5em;
+}
+
+.welcome {
+    font-size: 3em;
+    text-transform: uppercase;
+    
+}
+
+.invite {
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.menu {
+    padding: 0;
+    margin: 0;
+    display: block;
+    font-family: sans-serif;
+    font-size: 1.3em;
+    text-decoration: none;
+    text-align: left;
+    text-indent: 1.1em;
+    text-transform: uppercase;
+}
+
+
+
+.menu li a:hover {
+    color: darkgrey;
+    text-decoration: none; 
+}
+
+.menu li a:active {
+    color: white;
+    text-decoration: none; 
+}
+
+
+.menu li {
+    float: left;
+    display: block;
+    word-spacing: 1.5em;
+}
+
+.menu li a {
+    color: #fff;
+    text-decoration: none;
+
+}
+
+.slideLeft{
+	visibility: hidden;
+}
+
+.buttonRegistr {
+    background: #4eb540;
+    color: #fff;
+    font-size: 1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 2px;
+    display: block;
+    width: 10em;
+    padding: 20px 0;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 4em;
+    float: left;
+    margin-left: 16em;
+    cursor: pointer;
+    border: 0;
+}
+
+.buttonRegistr:hover {
+    background-color: #999;
+}
+
+.buttonLogin:hover {
+    background-color: #999;
+    color: #fff;
+}
+
+.buttonLogin {
+    outline: none;
+    background: #fff;
+    color: #000;
+    font-size: 1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 2px;
+    display: block;
+    width: 10em;
+    padding: 20px 0;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 4em;
+    float: right;
+    margin-right: 16em;
+    cursor: pointer;
+    border: 0;
+}
+
+.bookList li {
+    list-style-type: none;
+}
+
+.book {
+    font-size: 1.5em;
+    text-decoration: none;
+    color: #000;
+    display: block;
+}
+
+.author {
+    border-radius: 50%;
+    width: 3em;
+    float: left;
+}
+
+.aboutBook {
+    margin-left: 1em;
+    text-decoration: none;
+    float: left;
+}
+
+.bookName a {
+    font-size: 1em;
+    color: #000;
+    display: block;
+    text-decoration: none;
+}
+
+.authorName a {
+    font-size: 0.7em;
+    color: darkgrey;
+    display: block;
+    text-decoration: none;
+}
+
+.formatAndCheck {
+    text-decoration: none;
+    font-size: 0.7em;
+    float: right;
+}
+
+.check {
+    display: block;
+    color: #4eb540;
+}
+
+.format {
+    display: block;
+}
+
+.styles {
+}
+
+.styles select {
+    width: 9em;
+    height: 2em;
+    font-size: 1em;
+    border-radius: 2px;
+    width: 7em;
+    padding: 6px 0;
+    margin-top: 0.7em;
+    margin-bottom: 1.5em;
+   }
+
+.chooseStyle {
+    float: left;
+}
+
+.search {
+    float: right;
+}
+
+.search a {
+    text-decoration: none;
+    color: #000;
+}
+
+.search input {
+    border-radius: 5px;
+    width: 15em;
+    height: 2em;
+}
+
+.blockAbout {
+    padding-top: 2.5em;
+    text-align: center;
+}
+
+#howItWorks {
+    font-size: 2.6em;
+    text-transform: uppercase;
+}
+
+#pHow {
+    padding-top: 0;
+    font-size: 1.5em;
+    text-transform: uppercase;
+    color: darkgray;
+}
+
+.services {
+    margin-top: 3em;
+    margin-bottom: 3em;
+}
+
+.servicesItem {
+    width: 250px;
+    float: left;
+    text-align: center
+}
+
+.servicesItem h3 {
+    font-size: 1.8em;
+    margin-bottom: 5px;
+}
+
+.servicesItem p {
+    font-size: 1em;
+    color: #999;
+}
+
+.servicesItem:last-child {
+    float: right;
+}
+
+.servicesItem:nth-child(2) {
+    margin-left: 5.4em;
+}
+
+.registr {
+    width: 350px;
+    height: 420px;
+    margin: 15em auto;
+    background: #fff;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    z-index: 150;
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.formRegistr {
+    width: 275;
+    margin: -15px auto 20px auto;
+    text-align: center;
+}
+
+.formRegistr p {
+    font-size: 0.85em;
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+}
+
+.input {
+    width: 260px;
+    padding: 10px;
+    margin-bottom: 10px;
+    outline: none;
+}
+
+.close {
+    margin: 10px 0 0 320px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    padding: 2px;
+    background: #ccc;
+}
+
+.close:hover {
+    background: #fff;
+}
+
+#gray {
+    background-color: rgba(1,1,1,0.75);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: none;
+    z-index: 100;
+}
+
+#regButton {
+    background: #4eb540;
+    color: #fff;
+    font-size: 0.8em;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 2px;
+    display: block;
+    width: 15em;
+    padding: 10px 0;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 1em;
+    cursor: pointer;
+    border: 0;
+    margin-bottom: 1.5em;
+}
+
+.login {
+    width: 350px;
+    height: 260px;
+    margin: 15em auto;
+    background: #fff;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    z-index: 150;
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.formLogin {
+    width: 275px;
+    margin: -15px auto 20px auto;
+    text-align: center;
+}
+
+.loginButton {
+    background: #4eb540;
+    color: #fff;
+    font-size: 0.8em;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 2px;
+    display: block;
+    width: 15em;
+    padding: 10px 0;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 1em;
+    cursor: pointer;
+    border: 0;
+    margin-bottom: 1.5em;
+}
+
+.rights {
+    margin-top: 4em;
+    margin-bottom: 2em;
+}
+
+#searchStart {
+    background: #4eb540;
+    color: #fff;
+    font-size: 0.8em;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 2px;
+    width: 7em;
+    padding: 6px 0;
+    margin: 0 auto;
+    text-align: center;
+    cursor: pointer;
+    border: 0;
+}
+
+.inputUpload {
+    display: block;
+    width: 35em;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+#newBook {
+    margin-top: 1em;
+}
+
+#upButton {
+    background: #4eb540;
+    color: #fff;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    border-radius: 2px;
+    display: block;
+    width: 15em;
+    padding: 10px 0;
+    text-align: center;
+    margin-top: 4em;
+    cursor: pointer;
+    border: 0;
+    margin-bottom: 1em;
+}
+
+#upButton:hover {
+    background: darkgrey;
+}
+
+.verify {
+    display: none;
+    width: 350px;
+    height: 250px;
+    margin: 15em auto;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    z-index: 150;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.formVerify {
+    width: 275px;
+    margin: -15px auto 20px auto;
+    text-align: center;
+}
+
+.loading {
+    margin: 15em auto;
+    width: 10px;
+    height: 10px;
+    background-color: yellow;
+    z-index: 150;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    display: none;
+}
+
+.success {
+    width: 1.5em;
+    height: 1.5em;
+    margin-left: 0.5em;
+    margin-right: 1px;
+}
+
+.csrf {
+    display: none;
+    
+}
+
+.error {
+    width: 70px;
+    height: 70px;
+}
+
+.emailAlreadyRegistred {
+    text-align: center;
+    display: none;
+    width: 350px;
+    height: 230px;
+    margin: 15em auto;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    z-index: 150;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.success {
+    width: 70px;
+    height: 70px;
+}
+
+.check {
+    text-align: center;
+    width: 350px;
+    height: 230px;
+    margin: 15em auto;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    z-index: 150;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.check p {
+    color: #000;
+    margin-bottom: 40px;
+}
+
+#successReg {
+    text-align: center;
+    display: none;
+    width: 350px;
+    height: 260px;
+    margin: 15em auto;
+    background-color: #fff;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    z-index: 150;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
