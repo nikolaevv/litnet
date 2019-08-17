@@ -25,13 +25,15 @@ SECRET_KEY = '+3rg62$*ag^3#b0qnsb)(3j)o-f%psy3(i=l8ms39e7a@%8*o&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['185.4.73.118',
+                '127.0.0.1']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'main',
+    'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,3 +120,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/books/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'books')

@@ -17,10 +17,13 @@ class Book(models.Model):
     #Книга
     uploader = models.CharField(max_length=120)
     #E-Mail загрузчика книги
-    
+
     def __str__(self):
         return self.bookname
-    
+
+    #def get_absolute_url(self):
+        #return reverse("book", kwargs={"id": self.id})
+
 class User(models.Model):
     nickname = models.CharField(max_length=120)
     #Имя
@@ -30,15 +33,6 @@ class User(models.Model):
     #Пароль
     role = models.CharField(max_length=120, default="ROLE_USER")
     #Роль юзера
-    
-    def __str__(self):
-        return self.email
-    
-class CheckMail(models.Model):
-    email = models.CharField(max_length=120, primary_key=True)
-    #Электронная почта, уникальна
-    code = models.CharField(max_length=6)
-    #Код
-    
+
     def __str__(self):
         return self.email

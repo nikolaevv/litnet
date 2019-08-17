@@ -1,25 +1,90 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <script type="text/javascript" href="JavaScript.js"></script>
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'image/favicon.ico' %}" type="image/x-icon">
     <title>Книги</title>
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <script src="https://kit.fontawesome.com/219a799541.js"></script>
+    <script type="text/javascript" src="{% static 'jquery.js' %}"></script>
 </head>
 <body>
+    <script>
+        
+    var hiddenBooks = [];
+        
+    function show(state, element) {
+        document.getElementById(element).style.display = state;
+    }  
+        
+    function funcSuccess (data, textStatus, request) {
+        var notAvailableBooks = JSON.parse(data);
+        if (hiddenBooks.length != 0) {
+            for (var i in hiddenBooks) {
+                show('block', hiddenBooks[i])
+            }
+            
+            hiddenBooks.length = 0
+        }
+        
+        for (var v in notAvailableBooks) {
+            show('none', notAvailableBooks[v])
+            hiddenBooks.push(notAvailableBooks[v])
+            notAvailableBooks.length = 0
+        }
+
+        /* var hiddenBooks = Object.values(notAvailableBooks)
+        alert(typeof(hiddenBooks))
+        for(i = 0; i > hiddenBooks.length; i++) {
+            alert(i)
+            show('none', hiddenBooks[i])
+        } */
+    }
+        
+    $(document).ready(function () {
+        $("#searchStart").bind("click", function () {
+            var request = $("#searchKeyWords").val()
+            if (request != "") {
+                $.ajax ({
+                    url: "/search",
+                    type: "GET",
+                    data: ({request: request}),
+                    dataType: "html",
+                    success: funcSuccess
+                    });
+                }
+            });
+        
+        $("#styles").bind("change", function () {
+            var style = $("#styles").val()
+            if (style != "--") {
+                $.ajax ({
+                    url: "/choosestyle",
+                    type: "GET",
+                    data: ({style: style}),
+                    dataType: "html",
+                    success: funcSuccess
+                    });
+                }
+            });
+        });
+    </script>
     <div class="shortHeader">
-        <div class="container">
+        <div class="container inHeader">
             <div class="heading clearfix">
-                <a href="#">
-                    <img src="images/logo.png" class="logo" alt="LitNet">
+                <a href="/">
+                    <img src="{% static 'image/logo.png' %}" class="logo" alt="LitNet">
                 </a>
                 <nav>
-                <ul class="menu">
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">Загрузка</a></li>
-                    <li><a href="#">Книги</a></li>
-                    <li><a href="#">Вход</a></li>
-                </ul>
+                    <input type="checkbox" name="toggle" id="menu" class="toggleMenu">
+                    <label for="menu" class="toggleMenu"><i class="fas fa-align-justify"></i>Меню</label>
+                    <ul class="menu">
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="/upload">Загрузка</a></li>
+                        <li><a class="currentPage" href="/books">Книги</a></li>
+                        <li><a href="/me">Профиль</a></li>
+                    </ul>
                 </nav>
             </div>
         </div>
@@ -29,80 +94,51 @@
         <div class="chooseStyle">
             <span>Выберите жанр:</span>
             <div class="styles">
-                <select>
+                <select id="styles">
+                    <option>--</option>
                     <option>Ужасы</option>
                     <option>Классика</option>
+                    <option>Детективы</option>
+                    <option>Античная</option>
+                    <option>Бизнес</option>
+                    <option>Современная проза</option>
+                    <option>Сказки</option>
+                    <option>Мифы и легенды</option>
+                    <option>Биографии</option>
                 </select>
             </div>
         </div>
         <div class="search">
-            <form>
-                <input type="text" placeholder="  Введите запрос">
-                <button id="searchStart" href="#">Поиск</button>
+            <form method="GET">
+                <input id="searchKeyWords" type="text" placeholder="  Введите запрос">
+                <input id="searchStart" type="button" value="Поиск">
             </form>
         </div>
     </div>
     <div class="container">
         <ul class="bookList">
-            <li>
+        {% for u in books %}
+            <li id="{{u.id}}">
                 <div class="book clearfix">
-                    <a href="#">
-                        <img src="images/authorKing.jpg" class="author">
+                    <a href="/books/{{u.book}}">
+                        <img src="../static/image/{{u.authorPhoto}}" class="author">
                     </a>
                     <div class="aboutBook">
-                        <span class="bookName"><a href="#">Мистер Мерседес</a></span>
-                        <span class="authorName"><a href="#">Стивен Кинг</a></span>
-                    </div>
-                    <div class="formatAndCheck">
-                        <span class="check">✓ Проверено</span>
-                        <span class="format">Форматы: PDF</span>
+                        <input type="hidden" value="{{u.book}}">
+                        <span class="bookName"><a href="/books/{{u.book}}">{{u.bookname}}</a></span>
+                        <span class="authorName"><a href="/books/{{u.book}}">{{u.author}}</a></span>
                     </div>
                 </div>
                 <hr>
             </li>
-            
-            <li>
-                <div class="book clearfix">
-                    <a href="#">
-                        <img src="images/authorKing.jpg" class="author">
-                    </a>
-                    <div class="aboutBook">
-                        <span class="bookName"><a href="#">Мистер Мерседес</a></span>
-                        <span class="authorName"><a href="#">Стивен Кинг</a></span>
-                    </div>
-                </div>
-                <hr>
-            </li>
-            
-            <li>
-                <div class="book clearfix">
-                    <a href="#">
-                        <img src="images/authorKing.jpg" class="author">
-                    </a>
-                    <div class="aboutBook">
-                        <span class="bookName"><a href="#">Мистер Мерседес</a></span>
-                        <span class="authorName"><a href="#">Стивен Кинг</a></span>
-                    </div>
-                </div>
-                <hr>
-            </li>
-            
-            <li>
-                <div class="book clearfix">
-                    <a href="#">
-                        <img src="images/authorKing.jpg" class="author">
-                    </a>
-                    <div class="aboutBook">
-                        <span class="bookName"><a href="#">Мистер Мерседес</a></span>
-                        <span class="authorName"><a href="#">Стивен Кинг</a></span>
-                    </div>
-                </div>
-                <hr>
-            </li>
-            
+        {% endfor %}
         </ul>
     </div>
-    <div class="container rights">
-        © 2019 Все права защищены, LitNet
+    <div class="footer" id="shortPageFooter">
+        <div class="container rights center">
+            <span>© 2019 Все права защищены, LitNet</span>
+            <a href="https://vk.com/nikolayevv"><img class="footerImage" src="{% static 'image/VK.png' %}" alt="Соцсеть"></a>
+            <a href="https://tele.gg/nikolayevv"><img class="footerImage" src="{% static 'image/TG.png' %}" alt="Соцсеть"></a>
+        </div>
     </div>
 </body>

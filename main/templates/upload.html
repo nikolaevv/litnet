@@ -1,61 +1,74 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <script type="text/javascript" href="JavaScript.js"></script>
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'image/favicon.ico' %}" type="image/x-icon">
     <title>Загрузка</title>
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <script src="https://kit.fontawesome.com/219a799541.js"></script>
+    <script type="text/javascript" src="{% static 'jquery.js' %}"></script>
 </head>
 <body>
     <div class="shortHeader">
-        <div class="container">
+        <div class="container inHeader">
             <div class="heading clearfix">
-                <a href="#">
-                    <img src="images/logo.png" class="logo" alt="LitNet">
+                <a href="/">
+                    <img src="{% static 'image/logo.png' %}" class="logo" alt="LitNet">
                 </a>
                 <nav>
-                <ul class="menu">
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">Загрузка</a></li>
-                    <li><a href="#">Книги</a></li>
-                    <li><a href="#">Вход</a></li>
-                </ul>
+                    <input type="checkbox" name="toggle" id="menu" class="toggleMenu">
+                    <label for="menu" class="toggleMenu"><i class="fas fa-align-justify"></i>Меню</label>
+                    <ul class="menu">
+                        <li><a href="/">Главная</a></li>
+                        <li><a class="currentPage" href="/upload">Загрузка</a></li>
+                        <li><a href="/books">Книги</a></li>
+                        <li><a href="/me">Профиль</a></li>
+                    </ul>
                 </nav>
             </div>
         </div>
     </div>
     <br>
     <div class="container uploadBook">
-        <h3>Загрузка книг</h3>
-        <form name="upload">
-            <input id="newBookname" class="inputUpload" name="newBookname" type="text" placeholder="Название книги">
+        <h2>Загрузка книг</h2>
+        <form enctype="multipart/form-data" method="post" name="upload">
+            <input id="bookname" class="inputUpload" name="bookname" type="text" placeholder="Название книги">
 
-            <input id="newAuthor" class="inputUpload" name="newAuthor" type="text" placeholder="Автор">
+            <input id="author" class="inputUpload" name="author" type="text" placeholder="Автор">
             
-            <textarea id="newDesc" class="inputUpload" name="newDesc" type="text" placeholder="Описание произведения"></textarea>
+            <textarea id="desc" class="inputUpload" name="desc" type="text" placeholder="Описание произведения"></textarea>
             
-            <span>Выберите формат:</span>
+            <span>Выберите жанр:</span>
             <div class="styles">
-                <select name="newFormat">
-                    <option>PDF</option>
-                    <option>Mobi</option>
-                    <option>FB2</option>
-                    <option>RTF</option>
+                <select name="style" id="style">
+                    <option>Ужасы</option>
+                    <option>Классика</option>
+                    <option>Детективы</option>
+                    <option>Античная</option>
+                    <option>Бизнес</option>
+                    <option>Современная проза</option>
+                    <option>Сказки</option>
+                    <option>Мифы и легенды</option>
+                    <option>Биографии</option>
                 </select>
             </div>
             
-            <label for="newAuthorPhoto">Фото автора</label>
-            <input id="newAuthorPhoto" name="authorPhoto" type="file">
+            <label for="authorPhoto">Фото автора (png, jpeg, jpg)</label>
+            <input accept="image/jpeg,image/png,image/jpg" id="authorPhoto" name="authorPhoto" type="file">
             <br>
-            
-            <label for="newBook">Книга</label>
-            <input id="newBook" name="newBook" type="file">
-            
+            <label for="book">Книга (pdf, fb2, mobi, rtf)</label>
+            <input id="book" name="book" type="file">
+            <input type="hidden" id="email" value="{{user.email}}">
             <input id="upButton" type="submit" value="Загрузить">
         </form>
         <p>Нажимая кнопку "Загрузить", вы подтверждаете, что ознакомились с Регламентом загрузки книг</p>
     </div>
-    <div class="container rights">
-        © 2019 Все права защищены, LitNet
+    <div class="footer" id="shortPageFooter">
+        <div class="container rights center">
+            <span>© 2019 Все права защищены, LitNet</span>
+            <a href="https://vk.com/nikolayevv"><img class="footerImage" src="{% static 'image/VK.png' %}" alt="Соцсеть"></a>
+            <a href="https://tele.gg/nikolayevv"><img class="footerImage" src="{% static 'image/TG.png' %}" alt="Соцсеть"></a>
+        </div>
     </div>
 </body>

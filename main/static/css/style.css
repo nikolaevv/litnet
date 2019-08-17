@@ -18,7 +18,7 @@ a {
 
 a:hover {
     color: darkgrey;
-    text-decoration: none; 
+    text-decoration: none;
 }
 
 header {
@@ -28,12 +28,17 @@ header {
 
 .shortHeader {
     height: 90px;
-    background-color: dimgray;
+    background-color: #212121;
 }
 
 .container {
     width: 58em;
     margin: 0 auto;
+}
+
+#shortPageFooterProfile {
+    position: fixed; /* Фиксированное положение */
+    left: 0; bottom: 0;
 }
 
 .logo {
@@ -58,7 +63,7 @@ nav {
 .welcome {
     font-size: 3em;
     text-transform: uppercase;
-    
+
 }
 
 .invite {
@@ -71,7 +76,6 @@ nav {
 .menu {
     padding: 0;
     margin: 0;
-    display: block;
     font-family: sans-serif;
     font-size: 1.3em;
     text-decoration: none;
@@ -84,14 +88,13 @@ nav {
 
 .menu li a:hover {
     color: darkgrey;
-    text-decoration: none; 
+    text-decoration: none;
 }
 
 .menu li a:active {
     color: white;
-    text-decoration: none; 
+    text-decoration: none;
 }
-
 
 .menu li {
     float: left;
@@ -106,7 +109,7 @@ nav {
 }
 
 .slideLeft{
-	visibility: hidden;
+    visibility: hidden;
 }
 
 .buttonRegistr {
@@ -320,7 +323,6 @@ nav {
     width: 260px;
     padding: 10px;
     margin-bottom: 10px;
-    outline: none;
 }
 
 .close {
@@ -404,9 +406,9 @@ nav {
     margin-bottom: 1.5em;
 }
 
-.rights {
-    margin-top: 4em;
-    margin-bottom: 2em;
+.footer {
+    height: 10em;
+    background-color: #212121;
 }
 
 #searchStart {
@@ -445,10 +447,10 @@ nav {
     width: 15em;
     padding: 10px 0;
     text-align: center;
-    margin-top: 4em;
+    margin-top: 1em;
     cursor: pointer;
     border: 0;
-    margin-bottom: 1em;
+    margin-bottom: 3em;
 }
 
 #upButton:hover {
@@ -479,9 +481,9 @@ nav {
 
 .loading {
     margin: 15em auto;
-    width: 10px;
-    height: 10px;
-    background-color: yellow;
+    width: 10em;
+    height: 10em;
+    background-color: #FFF;
     z-index: 150;
     position: fixed;
     left: 0;
@@ -489,6 +491,11 @@ nav {
     bottom: 0;
     top: 0;
     display: none;
+}
+
+.loadingGif {
+    width: 10em;
+    height: 10em;
 }
 
 .success {
@@ -500,7 +507,7 @@ nav {
 
 .csrf {
     display: none;
-    
+
 }
 
 .error {
@@ -565,4 +572,442 @@ nav {
     right: 0;
     bottom: 0;
     top: 0;
+}
+
+#authorPhoto {
+    margin-bottom: 1.5em;
+}
+
+.verifiedProfile {
+    width: 25px;
+    height: 25px;
+    margin-right: 10px;
+}
+
+#profileText {
+    padding: 0;
+    font-family: sans-serif;
+    font-size: 1em;
+    text-decoration: none;
+    text-align: left;
+    text-indent: 1.1em;
+    text-transform: uppercase;
+    margin-bottom: 1em;
+}
+
+.nicknameProfile {
+    margin-bottom: 10px;
+}
+
+.currentPage {
+    color: darkgray !important;
+}
+
+.readanywhere {
+    background: url(../image/readany.png) no-repeat center top / cover;
+    height: 600px;
+}
+
+.readanytext span {
+    font-size: 2.5em;
+    text-transform: uppercase;
+}
+
+.readanytext {
+    padding-left: 37em;
+    padding-top: 4em;
+}
+
+.downloadios {
+    width: 10em;
+    height: 3em;
+    margin-top: 3em;
+}
+
+.isVerified {
+    color: green;
+}
+
+profileData {
+    color: green;
+}
+
+.rights {
+    padding-top: 3.5em;
+}
+
+.rights span {
+    color: #FFF;
+}
+
+.footerImage {
+    width: 3em;
+    height: 3em;
+    padding-left: 1em;
+    float: right;
+}
+
+#shortPageFooter {
+    width: 100%;
+    position: fixed; /* Фиксированное положение */
+    left: 0; bottom: 0;
+}
+
+.inHeader {
+}
+
+#toChangePassword {
+    color: #205395;
+    cursor: pointer;
+}
+
+.changePassword {
+    width: 350px;
+    height: 300px;
+    margin: 15em auto;
+    background: #fff;
+    border: 1px solid #fff;
+    border-radius: 15px;
+    z-index: 150;
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+}
+
+.formChangePassword {
+    width: 275px;
+    margin: -15px auto 20px auto;
+    text-align: center;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+}
+
+.center > span {
+  margin-right: auto;
+}
+
+.open-panel, .close-panel {
+    display: none;
+}
+
+nav [type="checkbox"] {
+    display: none;
+}
+
+nav label.toggleMenu {
+    display: none;
+}
+
+@media screen and (max-width: 1000px) {
+    nav label.toggleMenu {
+        background: #212121;
+        color: #FFF;
+        display: block;
+        padding: 15px 60px;
+        display: block;
+        text-transform: uppercase;
+        font-size: 45px;
+        cursor: pointer;
+        position: relative;
+    }
+
+    nav label.toggleMenu .fas {
+        position: absolute;
+        top: 15px;
+        left: 12px;
+        font-size: 40px;
+    }
+
+    header {
+        height: 1250px;
+    }
+
+    .logo {
+        width: 400px;
+    }
+
+    .menu li {
+        display: block;
+        float: none;
+        background-color: hsla(0, 0%, 0%, 1);
+        margin-top: 10px;
+        font-size: 45px;
+    }
+
+    .hello {
+        margin-top: 250px;
+    }
+
+    .menu {
+        display: none;
+        position: relative;
+        top: 0;
+    }
+
+    input.toggleMenu:checked + label.toggleMenu {
+        background: #000;
+        color: #FFF;
+    }
+
+    input.toggleMenu:checked ~ ul {
+        display: block;
+    }
+
+    .hello {
+        font-size: 30px;
+    }
+
+    .welcome {
+        font-size: 75px;
+    }
+
+    .buttonRegistr {
+        font-size: 2em;
+        border-radius: 2px;
+        width: 300px;
+        height: 100px;
+        padding: 20px 0;
+        margin: 0 auto;
+        margin-top: 4em;
+        margin-left: 3em;
+    }
+
+    .buttonLogin {
+        font-size: 2em;
+        border-radius: 2px;
+        width: 300px;
+        height: 100px;
+        padding: 20px 0;
+        margin: 0 auto;
+        margin-top: 4em;
+        margin-right: 3em;
+    }
+
+    #howItWorks {
+        font-size: 5em;
+    }
+
+    #pHow {
+        font-size: 2em;
+    }
+
+    .services {
+        margin-top: 3em;
+        margin-bottom: 3em;
+    }
+
+    .servicesItem {
+        width: 600px;
+        float: none;
+    }
+
+    .servicesItem h3 {
+        font-size: 3em;
+        margin-bottom: 5px;
+    }
+
+    .servicesItem p {
+        font-size: 1.5em;
+        color: #999;
+    }
+
+    .servicesItem:last-child {
+        float: none;
+    }
+
+    .servicesItem:nth-child(2) {
+        margin-left: 0em;
+    }
+
+    .serviceImage {
+        width: 100px;
+        height: 100px;
+    }
+
+    .readanywhere {
+        height: 620px;
+    }
+
+    .readanytext span {
+        font-size: 3.5em;
+    }
+
+    .readanytext {
+        padding-left: 12em;
+        padding-top: 2em;
+    }
+
+    .downloadios {
+        width: 10em;
+        height: 3em;
+        margin-top: 1em;
+    }
+
+    .readanytext p {
+        font-size: 1.1em;
+    }
+
+    .footerImage {
+        width: 4em;
+        height: 4em;
+        padding-left: 1em;
+        float: right;
+    }
+
+    .shortHeader {
+        height: 150px;
+    }
+
+    .inputUpload {
+        width: 50em;
+        height: 2em;
+        padding: 5px;
+        margin-bottom: 10px;
+    }
+
+    #newBook {
+        margin-top: 1em;
+    }
+
+    #upButton {
+        font-size: 1.5em;
+        width: 10em;
+        height: 2.5em;
+        padding: 10px 0;
+    }
+
+    .uploadBook span {
+        font-size: 1.6em;
+    }
+
+    .uploadBook label {
+        font-size: 1.6em;
+    }
+
+    .styles select {
+        width: 12em;
+        height: 2.5em;
+        font-size: 1em;
+        border-radius: 2px;
+        width: 7em;
+        padding: 6px 0;
+        margin-top: 0.7em;
+        margin-bottom: 1.5em;
+   }
+
+    #shortPageFooter {
+        margin-top: 52.5em;
+    }
+
+    .book {
+        font-size: 2.5em;
+    }
+
+    .search input {
+        border-radius: 5px;
+        width: 20em;
+        height: 3em;
+    }
+
+    .verifiedProfile {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
+
+    #profileText {
+        padding: 0;
+        font-family: sans-serif;
+        font-size: 2em;
+        text-decoration: none;
+        text-align: left;
+        text-indent: 1.1em;
+        text-transform: uppercase;
+        margin-bottom: 1em;
+    }
+
+    .nicknameProfile {
+        margin-bottom: 10px;
+        font-size: 4em;
+    }
+
+    .profileData {
+        font-size: 2em;
+    }
+
+    .registr {
+        width: 700px;
+        height: 600px;
+    }
+
+    .formRegistr {
+        width: 275;
+        margin: -15px auto 20px auto;
+        text-align: center;
+    }
+
+    .formRegistr p {
+        font-size: 1.5em;
+        margin-left: 1.5em;
+        margin-right: 1.5em;
+    }
+
+    .input {
+        width: 520px;
+    }
+
+    .formRegistr h3,  .formLogin h3{
+        font-size: 3em;
+    }
+
+    .close {
+        margin: 10px 0 0 650px;
+        width: 30px;
+        height: 30px;
+    }
+
+    #shortPageFooterProfile {
+        position: fixed; /* Фиксированное положение */
+        left: 0; bottom: 0;
+    }
+
+    .login {
+        width: 700px;
+        height: 450px;
+    }
+
+    .formLogin {
+        width: 275;
+        /* margin:  auto 20px auto; */
+        margin-left: 80px;
+        text-align: center;
+    }
+
+    .loginButton {
+        font-size: 1.5em;
+        border-radius: 2px;
+        width: 15em;
+        margin-top: 40px;
+        padding: 10px 0;
+    }
+
+    .verify {
+        width: 500px;
+        height: 400px;
+    }
+
+    .verify input {
+        width: 80%;
+    }
+
+    .formVerify {
+        margin-left: 80px;
+    }
+
 }

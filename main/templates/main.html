@@ -6,6 +6,7 @@
     <title>Главная</title>
     <link rel="stylesheet" href="{% static 'css/animations.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <script src="https://kit.fontawesome.com/219a799541.js"></script>
     <script type="text/javascript" src="{% static 'jquery.js' %}"></script>
 </head>
 <body>
@@ -21,35 +22,35 @@
                 }
             });
         });
-        
+
         var csrf; //Глобальная переменная
-        
+
         function showLoading () {
             show('none', 'registr');
             show('block', 'loading');
         }
-        
+
         function funcSuccess (data, textStatus, request) {
             show('none', 'loading');
-            if (data == "True") 
+            if (data == "True")
                 show('block', 'verify')
             else
                 show('block', 'emailAlreadyRegistred')
         }
-        
+
         function checkingCode () {
             show('none', 'verify');
             show('block', 'loading');
         }
-        
+
         function successCode (data, textStatus, request) {
             show('none', 'loading');
-            if (data == "Right") 
+            if (data == "Right")
                 show('block', 'successReg')
             else
                 show('block', 'error')
         }
-        
+
         $(document).ready(function () {
             $(".regButton").bind("click", function () {
                 var nickname = $("#newName").val()
@@ -67,7 +68,7 @@
                     data = "invalid";
                     }
                 });
-            
+
             $("#subCodeVerify").bind("click", function () {
                 var code = $("#codVerify").val()
                 if (code != "") {
@@ -81,72 +82,65 @@
                         });
                     }
                 });
-            
-            $("#loginButton").bind("click", function () {
-                var mail = $("#email").val()
-                var password = $("#password").val()
-                if (mail != "" && password != "") {
-                    $.ajax ({
-                        url: "/login",
-                        type: "POST",
-                        data: ({mail: mail, password: password}),
-                        dataType: "html",
-                        beforeSend: checkingCode,
-                        success: successCode
-                        });
-                    }
-                });
-            }); 
-        
+            });
+
         $('slideLeft').click(function() {
             $(this).addClass("slideLeft");
         });
-        
+
         function show(state, element) {
             document.getElementById(element).style.display = state;
             document.getElementById('gray').style.display = state;
         }
-        
+
         function unshow(elements) {
             $("."+elements).each(function(element) {
                 $(this).css('display','none');
             });
             document.getElementById('gray').style.display = "none";
         }
-        
+
         var data;
-        
+
         function valid(form) {
             var fail = false;
             var name = form.newName.value;
             var email = form.newEmail.value;
             var password = form.newPassword.value;
             var checkPassword = form.rePassword.value;
-            
+
             var adr_pattern = /@/;
-            
+
             if(name == '')
                 fail = 'Вы не ввели своё имя';
-            
+
             else if(adr_pattern.test(email) == false)
                 fail = 'Вы ввели неверную электронную почту';
-            
+
             else if(password == '')
                 fail = 'Вы не ввели пароль';
-            
+
             else if(password != checkPassword)
                 fail = 'Пароли не совпадают';
-            
+
             if(fail) {
                 alert(fail);
                 return false;
                 data = "invalid";
             }
-            
+
             else {
                 data = "valid";
             }
         }
+        
+        $(".open-panel").click(function(){
+            $("html").addClass("openNav");
+        });
+
+        $(".close-panel, #content").click(function(){
+            $("html").removeClass("openNav");
+        });
     </script>
     <div class="csrf">
         <span id="tokenCsrf">{% csrf_token %}</span>
@@ -154,16 +148,18 @@
     <header>
         <div class="container">
             <div class="heading clearfix">
-                <a href="#">
-                    <img href="#" src="{% static 'image/logo.png' %}" class="logo" alt="LitNet">
+                <a href="/">
+                    <img src="{% static 'image/logo.png' %}" class="logo" alt="LitNet">
                 </a>
                 <nav>
-                <ul class="menu">
-                    <li><a href="#">Главная</a></li>
-                    <li><a href="#">Загрузка</a></li>
-                    <li><a onclick="show('block', 'loading')" href="#">Книги</a></li>
-                    <li><a onclick="show('block', 'login')" href="#">Вход</a></li>
-                </ul>
+                    <input type="checkbox" name="toggle" id="menu" class="toggleMenu">
+                    <label for="menu" class="toggleMenu"><i class="fas fa-align-justify"></i>Меню</label>
+                    <ul class="menu">
+                        <li><a class="currentPage" href="/">Главная</a></li>
+                        <li><a href="/upload">Загрузка</a></li>
+                        <li><a href="/books">Книги</a></li>
+                        <li><a onclick="show('block', 'login')" href="#">Вход</a></li>
+                    </ul>
                 </nav>
             </div>
             <div class="hello slideLeft">
@@ -179,16 +175,16 @@
         </div>
         <div id="gray" onclick="unshow('show')"></div>
     </header>
-    <br>   
+    <br>
     <div class="container blockAbout">
         <center><span id="howItWorks">Сервисы</span></center>
         <p id="pHow">Как это работает?</p>
 
-        <div class="services clearfix">
+        <center><div class="services clearfix">
             <div class="servicesItem">
                 <img class="serviceImage pulse" src="{% static 'image/pdf.png' %}" alt="Услуга">
                 <h3>Скачивайте</h3>
-                <p>Скачивайте книгу в 
+                <p>Скачивайте книгу в
                 любом удобном для вас формате (PDF, mobi, FB2, RTF)</p>
             </div>
 
@@ -204,9 +200,16 @@
                 <p>Приглашайте друзей по своему рефереалу и получайте спецпредложения от нашего сайта</p>
             </div>
 
+        </div></center>
+    </div>
+
+    <div class="readanywhere clearfix">
+        <div class="readanytext">
+            <span>Читайте там, где удобно</span>
+            <p>LitNet предоставляет бесплатный доступ к сотням книг со всего мира на любых устройствах. Современные смартфоны с большим четкими дисплеями прекрасно подходят для чтения книг, уже мало в чем уступая планшетам или устройства на базе электронной бумаги. Конечно, у всех форматов есть свои поклонники, но сегодня нет проблем получить читалку сразу из коробки со смартфоном. Можно использовать предустановленное приложение Google, а можно загрузить наше приложения с функциями оффлайн-просмотра и внесением заметок в ходе чтения.</p><p>LitNet Mobile - это прежде всего коллекция сотен и тысяч книг от совершенно разных авторов. Он поддерживается почти на всех языках, которые есть в операционной системе. Есть и русская библиотека. Приложение удобно тем, что можно сразу получать, а вернее покупать книги, которые только вышли за рубежом. Если читаешь на английском, и интересуешься бизнес-литературой, научными и популярными изданиями по экономике, другим дисциплинам, то их тут можно получить сразу, практически также быстро, как через Amazon. В LitNet Mobile также встроена читалка. Приложение поддерживает оглавление, активные сноски. Настройки чтения позволяют регулировать размер шрифта, межстрочный и иные интервалы, можно выбирать цвет подложки и шрифта. Присутствуют настройки пролистывания, есть возможность синтеза речи, можно делать пометки и т.д.</p><p><b>Просто потому что Litnet</b></p>
+            <a href="#"><img class="downloadios" src="{% static 'image/downloadios.png' %}" alt=""></a>
         </div>
     </div>
-    
     <div id="registr" class="show container registr">
         <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'registr')" alt="">
         <div class="formRegistr">
@@ -225,22 +228,22 @@
             <p>Нажимая кнопку "Зарегистрироваться", вы подтверждаете, что прочитали и согласны с нашими Условиями использования и Политикой конфидециальности</p>
         </div>
     </div>
-    
+
     <div id="login" class="show container login">
         <img class="close" src="{% static 'image/close.png' %} " onclick="show('none', 'login')" alt="">
         <div class="formLogin">
             <h3>Авторизация</h3>
-            <form name="login">
-            
+            <form action="" method="post" name="login">
+
                 <input id="email" class="input" name="email" type="text" placeholder="Электронная почта">
 
                 <input id="password" class="input" name="password" type="password" placeholder="Пароль">
                 <span>Нет аккаунта? <a href="#" onclick="show('none', 'login'); show('block', 'registr');">Зарегистрироваться</a></span>
-                <input id="loginButton" type="button" class="loginButton" value="Войти" />
+                <input id="loginButton" type="submit" class="loginButton" value="Войти" />
             </form>
         </div>
     </div>
-    
+
     <div id="verify" class="verify">
         {% csrf_token %}
         <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'verify')" alt="">
@@ -248,32 +251,32 @@
             <h3>Подтверждение электронной почты</h3>
             <p>Вам отправлен email-пароль</p>
             <form method="post" action="" name="verify">
-            
+
                 <input id="codVerify" class="input" name="codVerify" type="text" placeholder="EMail-пароль">
 
                 <button id="subCodeVerify" class="loginButton" type="button">Подтвердить</button>
             </form>
         </div>
     </div>
-    
+
     <div id="loading" class="loading container">
         <img class="loadingGif" src="{% static 'image/loading.gif' %}" alt="">
     </div>
-    
+
     <div id="emailAlreadyRegistred" class="container emailAlreadyRegistred">
         <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'emailAlreadyRegistred')" alt="">
         <img class="error" src="{% static 'image/error.png' %}" alt="">
         <h3>Выбранная элекронная почта уже привязана к аккаунту</h3>
         <p>Попроуйте выбрать другую</p>
     </div>
-    
+
     <div id="error" class="container emailAlreadyRegistred">
         <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'error')" alt="">
         <img class="error" src="{% static 'image/error.png' %}" alt="">
         <h3>Что-то пошло не так...</h3>
         <p>Попроуйте снова</p>
     </div>
-    
+
     <div id="successReg" class="container">
         <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'successReg')" alt="">
         <img class="success" src="{% static 'image/success.png' %}" alt="">
@@ -281,9 +284,12 @@
         <p>Вы можете пройти к просмотру книг</p>
         <button href="/books" id="profileButton" class="loginButton">Перейти</button>
     </div>
-    
-    <div class="container rights">
-        © 2019 Все права защищены, LitNet
+    <div class="footer">
+        <div class="container rights center">
+            <span>© 2019 Все права защищены, LitNet</span>
+            <a href="https://vk.com/nikolayevv"><img class="footerImage" src="{% static 'image/VK.png' %}" alt="Соцсеть"></a>
+            <a href="https://tele.gg/nikolayevv"><img class="footerImage" src="{% static 'image/TG.png' %}" alt="Соцсеть"></a>
+        </div>
     </div>
 </body>
 </html>

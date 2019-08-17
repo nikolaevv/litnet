@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'image/favicon.ico' %}" type="image/x-icon">
+    <title>Мой профиль</title>
+    <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+    <script src="https://kit.fontawesome.com/219a799541.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    <script type="text/javascript" src="{% static 'jquery.js' %}"></script>
+</head>
+<body>
+    <script>
+        function showLoading () {
+            show('none', 'changePassword');
+            show('block', 'loading');
+        }
+
+        function funcSuccess (data, textStatus, request) {
+          alert(data)
+            show('none', 'loading');
+            if (data == "Right")
+                show('block', 'success')
+            else
+                show('block', 'error')
+        }
+
+        $(document).ready(function () {
+            $("#changePasswordButton").bind("click", function () {
+                var oldPassword = $("#oldPassword").val()
+                var password = $("#password").val()
+                var rePassword = $("#rePassword").val()
+                var email = $("#email").val()
+                if (password == rePassword && password != "" && email != "") {
+                    $.ajax ({
+                        url: "/changepass",
+                        type: "POST",
+                        data: ({oldPassword: oldPassword, password: password, email: email}),
+                        dataType: "html",
+                        beforeSend: showLoading,
+                        success: funcSuccess
+                        });
+                    }
+                });
+            });
+
+        function show(state, element) {
+            document.getElementById(element).style.display = state;
+            document.getElementById('gray').style.display = state;
+        }
+
+        function unshow(elements) {
+            $("."+elements).each(function(element) {
+                $(this).css('display','none');
+            });
+            document.getElementById('gray').style.display = "none";
+        }
+
+    </script>
+    <div class="shortHeader inHeader">
+        <div class="container">
+            <div class="heading clearfix">
+                <a href="/">
+                    <img src="{% static 'image/logo.png' %}" class="logo" alt="LitNet">
+                </a>
+                <nav>
+                    <input type="checkbox" name="toggle" id="menu" class="toggleMenu">
+                    <label for="menu" class="toggleMenu"><i class="fas fa-align-justify"></i>Меню</label>
+                    <ul class="menu">
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="/upload">Загрузка</a></li>
+                        <li><a href="/books">Книги</a></li>
+                        <li><a class="currentPage" href="/me">Профиль</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div id="gray" onclick="unshow('show')"></div>
+    <div class="container profilelabel">
+        <center>
+            <h1 class="nicknameProfile">{{user.nickname}}</h1>
+            <div class="isVerified">
+                <img class="verifiedProfile" src="{% static 'image/success.png' %}" alt="">
+                <span id="profileText">Профиль подтверждён</span>
+            </div>
+            <br>
+            <br>
+            <div class="profileData">
+                <span>Электронная почта: {{user.email}}</span>
+                <br>
+                <br>
+                <span onclick="show('block', 'changePassword')" id="toChangePassword">Сменить пароль</span>
+            </div>
+        </center>
+    </div>
+
+    <div id="changePassword" class="show container changePassword">
+        <img class="close" src="{% static 'image/close.png' %} " onclick="show('none', 'changePassword')" alt="">
+        <div class="formChangePassword">
+            <h3>Смена пароля</h3>
+            <form name="changePassword">
+
+                <input id="oldPassword" class="input" name="oldPassword" type="password" placeholder="Старый пароль">
+                <input id="password" class="input" name="password" type="password" placeholder="Новый пароль">
+                <input id="rePassword" class="input" name="rePassword" type="password" placeholder="Повторите новый пароль">
+                <input type="hidden" name="email" id="email" value="{{user.email}}">
+                <input id="changePasswordButton" type="button" class="loginButton" value="Сменить" />
+            </form>
+        </div>
+    </div>
+
+    <div id="error" class="container emailAlreadyRegistred">
+        <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'error')" alt="">
+        <img class="error" src="{% static 'image/error.png' %}" alt="">
+        <h3>Что-то пошло не так...</h3>
+        <p>Попроуйте снова</p>
+    </div>
+
+    <div id="success" class="container emailAlreadyRegistred">
+        <img class="close" src="{% static 'image/close.png' %}" onclick="show('none', 'success')" alt="">
+        <img class="error" src="{% static 'image/success.png' %}" alt="">
+        <h3>Успешно</h3>
+        <p>Пароль изменён</p>
+    </div>
+
+    <div id="loading" class="loading container">
+        <img class="loadingGif" src="{% static 'image/loading.gif' %}" alt="">
+    </div>
+
+    <div class="footer" id="shortPageFooter">
+        <div class="container rights center">
+            <span>© 2019 Все права защищены, LitNet</span>
+            <a href="https://vk.com/nikolayevv"><img class="footerImage" src="{% static 'image/VK.png' %}" alt="Соцсеть"></a>
+            <a href="https://tele.gg/nikolayevv"><img class="footerImage" src="{% static 'image/TG.png' %}" alt="Соцсеть"></a>
+        </div>
+    </div>
+</body>
