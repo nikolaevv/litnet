@@ -14,7 +14,7 @@ LitNet — это простая и удобная в использовании
 
 Веб-версия адаптирована под мобильные устройства, и сайт отлично выглядит с любого смартфона.
 
-Скриншоты: https://github.com/nikolaevv/litnet/tree/mater/screenshots/web
+Скриншоты: https://github.com/nikolaevv/litnet/tree/master/screenshots/web
 
 Мобильная версия
 ------------
@@ -25,7 +25,7 @@ LitNet — это простая и удобная в использовании
 
 В настройках можно перейти на сайт платформы, сменить электронную почту и пароль, выйти из приложения.
 
-Скриншоты: https://github.com/nikolaevv/litnet/tree/mater/screenshots/mobile
+Скриншоты: https://github.com/nikolaevv/litnet/tree/master/screenshots/mobile
 
 Что дальше?
 -----------
