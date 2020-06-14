@@ -17,9 +17,11 @@ import codecs
 from .serializers import BookSerializer
 import io
 from django.template import Context, loader
+from config import email_adress, email_pass
 
-registratingUsers = []
-changingEmail = []
+registrating_users = {}
+changing_email = []
+# Глобальные массивы для хранения кодов подтверждения и прочей информации
 
 def main(request):
     #Главная страница
@@ -42,41 +44,40 @@ def main(request):
     print(isLogin)
     return render(request, 'main.html', {'form': form})
 
-def reqAvilableEmail(request):
-    newEmail = request.POST.get('email', '')
-    #Запрос email с формы
+def email_availability(request):
+    new_email = request.POST.get('email', '')
+    # Запрос email с формы
     newNickname = request.POST.get('nickname', '')
     newPassword = request.POST.get('password', '')
     userEmails = User.objects.all().filter(email = newEmail)
-    #Фильтр в БД по email с формы
+    # Фильтр в БД по email с формы
     if not userEmails:
         response = HttpResponse("True")
-        verifyCode = str(random.randint(100000, 999999))
-        user = {"email": newEmail,
-                "password": newPassword,
+        verify_code = str(random.randint(100000, 999999))
+        # Генерация кода
+        user = {"password": newPassword,
                 "nickname": newNickname,
-                "verifyCode": verifyCode}
-        registratingUsers.append(user)
-        request.session['reg'] = newEmail
-        #b = User(nickname email password)
-        #b.save()
+                "verifyCode": verify_code}
+
+        registrating_users[new_email] = user
+        request.session['reg'] = new_email
+
         smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
         smtpObj.starttls()
-        smtpObj.login('litnetpost@gmail.com', 'django13579')
-        smtpObj.sendmail("litnetpost@gmail.com", newEmail, verifyCode)
+        smtpObj.login(email_adress, email_pass)
+        smtpObj.sendmail(email_adress, new_email, verify_code)
         return response
 
     else:
         response = HttpResponse("False")
         return response
 
-def checkCode(request):
-    userCode = request.POST.get('code', '')
-    isReg = request.session.get('reg', 'none')
-    if isReg != 'none':
-        for u in registratingUsers:
-            if u["email"] == isReg:
-                user = u
+def check_code(request):
+    user_code = request.POST.get('code', None)
+    is_registred = request.session.get('reg', None)
+    if is_registred:
+        user = registrating_users[is_registred]
+
         if user["verifyCode"] == userCode:
             response = HttpResponse("Right")
             b = User(nickname = user["nickname"], email = user["email"], password = user["password"])
@@ -86,14 +87,14 @@ def checkCode(request):
             return response
 
         else:
-            response = HttpResponse("NotRight")
+            response = HttpResponse("Not Right")
             return response
 
 def books(request):
-    isLogin = request.session.get('user', 'none')
-    if isLogin == 'none':
+    is_login = request.session.get('user', None)
+    if is_login:
         return HttpResponseRedirect('/')
-    print(isLogin + "1")
+
     books = Book.objects.all()
     return render(request, 'bookList.html', {'books': books})
 
