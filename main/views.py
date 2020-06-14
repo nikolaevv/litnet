@@ -23,6 +23,9 @@ registrating_users = {}
 changing_email = []
 # Глобальные массивы для хранения кодов подтверждения и прочей информации
 
+work_dir = os.path.dirname(os.path.abspath(__file__))
+# Абсоютный путь
+
 def main(request):
     #Главная страница
     if request.method == 'POST':
@@ -125,76 +128,67 @@ def choosestyle(request):
     return response
 
 def upload(request):
-    isLogin = request.session.get('user', 'none')
-    if isLogin in ('none', ''):
+    is_login = request.session.get('user', 'none')
+    if not is_login:
         return HttpResponseRedirect('/')
     else:
         if request.method == 'POST':
-            print("OK")
             form = BookForm(request.POST, request.FILES)
             if form.is_valid():
-                print("start")
                 bookname = form.cleaned_data['bookname']
-                print(bookname)
                 author = form.cleaned_data['author']
-                print(author)
                 desc = form.cleaned_data['desc']
-                print(desc)
                 style = form.cleaned_data['style']
-                print(style)
-                #form = form.cleaned_data['form']
-                #print(form)
-                authorPhoto = request.FILES['authorPhoto']
-                realFormatAuthorPhoto = str(authorPhoto).split(".")[-1]
+                # Получение данных произведения
+
+                author_photo = request.FILES['authorPhoto']
+                photo_format = str(authorPhoto).split(".")[-1]
                 book = request.FILES['book']
                 realFormatBook = str(book).split(".")[-1]
                 if realFormatBook in ("pdf", "mobi", "fb2", "rtf"):
-                    newBookFileName = "book" + str(random.randint(1000000000, 9999999999)) + "." + realFormatBook
-                    print(newBookFileName)
+                    file_name = "book" + str(random.randint(1000000000, 9999999999)) + "." + realFormatBook
+
                     fs = FileSystemStorage()
-                    filename = fs.save(newBookFileName, book)
+                    filename = fs.save(file_name, book)
                     uploaded_file_url = fs.url(filename)
-                    with open((r"C:\\YandexDisk\\Проекты\\litnet\\main\\templates\\books\\" + newBookFileName), 'wb+') as destination:
+                    with open(f"{work_dir}\\main\\templates\\books\\{file_name}", 'wb+') as destination:
                         for chunk in request.FILES['book'].chunks():
                             destination.write(chunk)
-                    magicFormat = magic.from_file(("books/" + newBookFileName))
-                    print(magicFormat)
+
+                    magicFormat = magic.from_file("books\\" + file_name)
+                    # Двухфакторная проверка формата книги и её сохранение
+
                     if magicFormat.find("PDF") == -1 and magicFormat.find("XML") == -1:
-                        print("Отправлен зашифрованный скрипт, удаление...")
-                        os.remove(r"C:\YandexDisk\Проекты\litnet\main\templates\books\%s" % newBookFileName)
-                    if realFormatAuthorPhoto in ("png", "jpeg", "jpg"):
-                        newAuthorPhotoFile = "author" + str(random.randint(1000000000, 9999999999)) + "." + realFormatAuthorPhoto
-                        print(newAuthorPhotoFile)
-                        with open(("main\\static\\image\\" + newAuthorPhotoFile), 'wb+') as destination:
+                        os.remove(f'{work_dir}\\main\\templates\\books\\{file_name}')
+                    if photo_format in ("png", "jpeg", "jpg"):
+                        photo_file = "author" + str(random.randint(1000000000, 9999999999)) + "." + photo_format
+
+                        with open(f'main\\static\\image\\{photo_file}', 'wb+') as destination:
                             for chunk in request.FILES['authorPhoto'].chunks():
                                   destination.write(chunk)
-                        im = Image.open("main\\static\\image\\" + newAuthorPhotoFile)
+
+                        im = Image.open("main\\static\\image\\" + photo_file)
                         (width, height) = im.size
-                        print(type(width))
-                        print(height)
                         if width != height:
                             if width > height:
                                 side = (width - height)/2
                                 area = (side, 0, (side + height), height)
                                 im = im.crop(area)
-                                im.save("main\\static\\image\\" + newAuthorPhotoFile)
+                                im.save("main\\static\\image\\" + photo_file)
                             elif height > width:
                                 side = (height - width)/2
                                 area = (0, side, width, (side + width))
                                 im = im.crop(area)
-                                os.remove(r"C:\YandexDisk\Проекты\litnet\main\static\image\%s" % newAuthorPhotoFile)
-                                im.save(("main\\static\\image\\" + newAuthorPhotoFile))
-                                #cropped_image.save("main\\static\\image\\" + "123.jpg")
+                                os.remove(r"C:\YandexDisk\Проекты\litnet\main\static\image\%s" % photo_file)
+                                im.save(("main\\static\\image\\" + photo_file))
+                                # Обработка изображения
 
                         b = Book(bookname = bookname, author = author, style = style, desc = desc, form = realFormatBook, authorPhoto = newAuthorPhotoFile, book = newBookFileName, uploader = isLogin)
                         b.save()
-                #return HttpResponseRedirect('/books/book')
-            else:
-                print("Неаааь")
+
         else:
             form = BookForm()
     return render(request, 'upload.html', {'form': form})
-    #return render(request, 'upload.html')
 
 def me(request):
     isLogin = request.session.get('user', 'none')
