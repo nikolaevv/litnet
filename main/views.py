@@ -42,9 +42,6 @@ def main(request):
     print(isLogin)
     return render(request, 'main.html', {'form': form})
 
-def registr(request):
-    return render(request, 'registr.html')
-
 def reqAvilableEmail(request):
     newEmail = request.POST.get('email', '')
     #Запрос email с формы
