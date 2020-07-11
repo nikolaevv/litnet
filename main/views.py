@@ -55,12 +55,12 @@ def email_availability(request):
     userEmails = User.objects.all().filter(email = newEmail)
     # Фильтр в БД по email с формы
     if not userEmails:
-        response = HttpResponse("True")
+        response = HttpResponse('True')
         verify_code = str(random.randint(100000, 999999))
         # Генерация кода
-        user = {"password": newPassword,
-                "nickname": newNickname,
-                "verifyCode": verify_code}
+        user = {'password': newPassword,
+                'nickname': newNickname,
+                'verifyCode': verify_code}
 
         registrating_users[new_email] = user
         request.session['reg'] = new_email
@@ -72,7 +72,7 @@ def email_availability(request):
         return response
 
     else:
-        response = HttpResponse("False")
+        response = HttpResponse('False')
         return response
 
 def check_code(request):
@@ -81,16 +81,16 @@ def check_code(request):
     if is_registred:
         user = registrating_users[is_registred]
 
-        if user["verifyCode"] == userCode:
-            response = HttpResponse("Right")
-            b = User(nickname = user["nickname"], email = user["email"], password = user["password"])
+        if user['verifyCode'] == userCode:
+            response = HttpResponse('Right')
+            b = User(nickname = user['nickname'], email = user['email'], password = user['password'])
             b.save()
             request.session['user'] = newEmail
             registratingUsers.remove(user)
             return response
 
         else:
-            response = HttpResponse("Not Right")
+            response = HttpResponse('Not Right')
             return response
 
 def books(request):
@@ -99,6 +99,7 @@ def books(request):
         return HttpResponseRedirect('/')
 
     books = Book.objects.all()
+    # Полученик всех книг
     return render(request, 'bookList.html', {'books': books})
 
 def search(request):
@@ -142,45 +143,45 @@ def upload(request):
                 # Получение данных произведения
 
                 author_photo = request.FILES['authorPhoto']
-                photo_format = str(authorPhoto).split(".")[-1]
+                photo_format = str(authorPhoto).split('.')[-1]
                 book = request.FILES['book']
-                realFormatBook = str(book).split(".")[-1]
-                if realFormatBook in ("pdf", "mobi", "fb2", "rtf"):
-                    file_name = "book" + str(random.randint(1000000000, 9999999999)) + "." + realFormatBook
+                realFormatBook = str(book).split('.')[-1]
+                if realFormatBook in ('pdf', 'mobi', 'fb2', 'rtf'):
+                    file_name = 'book' + str(random.randint(1000000000, 9999999999)) + '.' + realFormatBook
 
                     fs = FileSystemStorage()
                     filename = fs.save(file_name, book)
                     uploaded_file_url = fs.url(filename)
-                    with open(f"{work_dir}\\main\\templates\\books\\{file_name}", 'wb+') as destination:
+                    with open(f'{work_dir}\\main\\templates\\books\\{file_name}', 'wb+') as destination:
                         for chunk in request.FILES['book'].chunks():
                             destination.write(chunk)
 
-                    magicFormat = magic.from_file("books\\" + file_name)
+                    magicFormat = magic.from_file(books\\' + file_name)
                     # Двухфакторная проверка формата книги и её сохранение
 
-                    if magicFormat.find("PDF") == -1 and magicFormat.find("XML") == -1:
+                    if magicFormat.find('PDF') == -1 and magicFormat.find('XML') == -1:
                         os.remove(f'{work_dir}\\main\\templates\\books\\{file_name}')
-                    if photo_format in ("png", "jpeg", "jpg"):
-                        photo_file = "author" + str(random.randint(1000000000, 9999999999)) + "." + photo_format
+                    if photo_format in ('png', 'jpeg', 'jpg'):
+                        photo_file = 'author' + str(random.randint(1000000000, 9999999999)) + '.' + photo_format
 
                         with open(f'main\\static\\image\\{photo_file}', 'wb+') as destination:
                             for chunk in request.FILES['authorPhoto'].chunks():
                                   destination.write(chunk)
 
-                        im = Image.open("main\\static\\image\\" + photo_file)
+                        im = Image.open('main\\static\\image\\' + photo_file)
                         (width, height) = im.size
                         if width != height:
                             if width > height:
                                 side = (width - height)/2
                                 area = (side, 0, (side + height), height)
                                 im = im.crop(area)
-                                im.save("main\\static\\image\\" + photo_file)
+                                im.save('main\\static\\image\\' + photo_file)
                             elif height > width:
                                 side = (height - width)/2
                                 area = (0, side, width, (side + width))
                                 im = im.crop(area)
-                                os.remove(r"C:\YandexDisk\Проекты\litnet\main\static\image\%s" % photo_file)
-                                im.save(("main\\static\\image\\" + photo_file))
+                                os.remove(r'C:\YandexDisk\Проекты\litnet\main\static\image\%s' % photo_file)
+                                im.save(('main\\static\\image\\' + photo_file))
                                 # Обработка изображения
 
                         b = Book(bookname = bookname, author = author, style = style, desc = desc, form = realFormatBook, authorPhoto = newAuthorPhotoFile, book = newBookFileName, uploader = isLogin)
@@ -191,64 +192,56 @@ def upload(request):
     return render(request, 'upload.html', {'form': form})
 
 def me(request):
+    # Страница о пользователе
     isLogin = request.session.get('user', 'none')
     user = User.objects.filter(email = isLogin)[0]
     print(user)
     if isLogin in ('none', ''):
         return HttpResponseRedirect('/')
-    else:
-        print(isLogin + "1")
+
     return render(request, 'profile.html', {'user': user})
 
 def changepass(request):
-    oldPassword = request.POST.get('oldPassword', '')
-    print("OK")
+    # Смена пароля
+    old_password = request.POST.get('oldPassword', '')
     password = request.POST.get('password', '')
     email = request.POST.get('email', '')
+
     isLogin = request.session.get('user', 'none')
     user = User.objects.all().filter(email = isLogin)[0]
-    print(user)
-    if user.password == oldPassword:
+
+    if user.password == old_password:
         user.password = password
         user.save()
-        response = HttpResponse("Right")
-        return response
-    else:
-        response = HttpResponse("NotRight")
-        return response
+
+        return HttpResponse('Right')
+    return HttpResponse('NotRight')
 
 def book(request, book):
-    print(book)
-    with codecs.open(("main/templates/books/" + book), "rb") as pdf:
+    # Получение книги в PDF формате
+    with codecs.open(('main/templates/books/' + book), 'rb') as pdf:
         response = HttpResponse(pdf.read())
         response['Content-Type'] = 'application/pdf'
-        return response
     pdf.closed
-    #f = open((r'C:\YandexDisk\Проекты\litnet\books\mercedes.pdf'), 'rb')
-    #return HttpResponse(f)
-    #template = loader.get_template(r"C:\\YandexDisk\\Проекты\\litnet\\main\\templates\\books\\mercedes.pdf")
-    #return HttpResponse(template.render())
-    #return render(request, 'upload.html')
+    return response
 
 def login(request):
+    # Авторизация
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             users = User.objects.all().filter(email = email).filter(password = password)
-            if users:
+            if len(users) > 0:
                 request.session['user'] = email
-                response = HttpResponse('True')
-                return response
+                return HttpResponse('True')
             else:
-                response = HttpResponse('False')
-                return response
-        else:
-            response = HttpResponse('Invalid')
-            return response
+                return HttpResponse('False')
 
-def getUserInfo(request):
+        return HttpResponse('Invalid')
+
+def get_user_info(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
@@ -302,26 +295,26 @@ def changeEmail(request):
             users = User.objects.all().filter(email = oldEmail).filter(password = password)
             if users:
                 for i in changingEmail:
-                    if i["oldEmail"] == oldEmail:
+                    if i['oldEmail'] == oldEmail:
                         changingEmail.remove(i)
                 verifyCode = str(random.randint(100000, 999999))
                 smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
                 smtpObj.starttls()
                 smtpObj.login('litnetpost@gmail.com', 'django13579')
-                smtpObj.sendmail("litnetpost@gmail.com", email, verifyCode)
-                changeData = {"oldEmail": oldEmail,
-                              "email": email,
-                              "verifyCode": verifyCode}
+                smtpObj.sendmail('litnetpost@gmail.com', email, verifyCode)
+                changeData = {'oldEmail': oldEmail,
+                              'email': email,
+                              'verifyCode': verifyCode}
                 changingEmail.append(changeData)
                 print(changingEmail)
                 response = HttpResponse('True')
                 return response
             else:
-                print("Пользователь не найден")
+                print('Пользователь не найден')
                 response = HttpResponse('False')
                 return response
         else:
-            print("Невалидная форма")
+            print('Невалидная форма')
             response = HttpResponse('Invalid')
             return response
 
@@ -335,18 +328,18 @@ def searchBook(request):
             suitableBooks = []
             for book in books:
                 if book.bookname.find(text) != -1 or book.author.find(text) != -1:
-                    newArray = {"bookname": book.bookname, "author": book.author, "book": book.book}
+                    newArray = {'bookname': book.bookname, 'author': book.author, 'book': book.book}
                     suitableBooks.append(newArray)
             print(suitableBooks)
             if len(suitableBooks) == 0:
-                response = HttpResponse("None")
+                response = HttpResponse('None')
             else:
                 #jsonObject = json.dumps(suitableBooks)
                 #print(json.loads(jsonObject))
                 response = JsonResponse(suitableBooks, safe=False)
             return response
         else:
-            print("Невалидная форма")
+            print('Невалидная форма')
             response = HttpResponse('Invalid')
             return response
 
@@ -360,24 +353,24 @@ def verifyNewEmail(request):
             print(verifyCode)
             users = User.objects.all().filter(email = oldEmail)
             for i in changingEmail:
-                if i["oldEmail"] == oldEmail:
+                if i['oldEmail'] == oldEmail:
                     user = i
             if users:
-                if user["verifyCode"] == verifyCode:
-                    users[0].email = user["email"]
+                if user['verifyCode'] == verifyCode:
+                    users[0].email = user['email']
                     users[0].save()
-                    response = HttpResponse(user["email"])
+                    response = HttpResponse(user['email'])
                     changingEmail.remove(user)
                     return response
                 else:
                     response = HttpResponse('False')
                     return response
             else:
-                print("Пользователь не найден")
+                print('Пользователь не найден')
                 response = HttpResponse('False')
                 return response
         else:
-            print("Невалидная форма")
+            print('Невалидная форма')
             response = HttpResponse('Invalid')
             return response
 
