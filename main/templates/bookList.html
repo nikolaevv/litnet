@@ -11,37 +11,31 @@
 </head>
 <body>
     <script>
-        
+
     var hiddenBooks = [];
-        
+
     function show(state, element) {
         document.getElementById(element).style.display = state;
-    }  
-        
+    }
+
     function funcSuccess (data, textStatus, request) {
         var notAvailableBooks = JSON.parse(data);
         if (hiddenBooks.length != 0) {
             for (var i in hiddenBooks) {
                 show('block', hiddenBooks[i])
             }
-            
+
             hiddenBooks.length = 0
         }
-        
+
         for (var v in notAvailableBooks) {
             show('none', notAvailableBooks[v])
             hiddenBooks.push(notAvailableBooks[v])
             notAvailableBooks.length = 0
         }
 
-        /* var hiddenBooks = Object.values(notAvailableBooks)
-        alert(typeof(hiddenBooks))
-        for(i = 0; i > hiddenBooks.length; i++) {
-            alert(i)
-            show('none', hiddenBooks[i])
-        } */
     }
-        
+
     $(document).ready(function () {
         $("#searchStart").bind("click", function () {
             var request = $("#searchKeyWords").val()
@@ -55,7 +49,7 @@
                     });
                 }
             });
-        
+
         $("#styles").bind("change", function () {
             var style = $("#styles").val()
             if (style != "--") {
@@ -136,7 +130,7 @@
     </div>
     <div class="footer" id="shortPageFooter">
         <div class="container rights center">
-            <span>© 2019 Все права защищены, LitNet</span>
+            <span>© {{year}} Все права защищены, LitNet</span>
             <a href="https://vk.com/nikolayevv"><img class="footerImage" src="{% static 'image/VK.png' %}" alt="Соцсеть"></a>
             <a href="https://tele.gg/nikolayevv"><img class="footerImage" src="{% static 'image/TG.png' %}" alt="Соцсеть"></a>
         </div>

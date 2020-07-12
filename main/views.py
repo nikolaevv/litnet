@@ -18,6 +18,7 @@ from .serializers import BookSerializer
 import io
 from django.template import Context, loader
 from config import email_adress, email_pass
+import datetime
 
 registrating_users = {}
 changing_email = []
@@ -44,8 +45,8 @@ def main(request):
     else:
         form = UserForm()
     isLogin = request.session.get('user', 'none')
-    print(isLogin)
-    return render(request, 'main.html', {'form': form})
+
+    return render(request, 'main.html', {'form': form, 'year': datetime.datetime.now().year})
 
 def email_availability(request):
     new_email = request.POST.get('email', '')
@@ -100,7 +101,7 @@ def books(request):
 
     books = Book.objects.all()
     # Полученик всех книг
-    return render(request, 'bookList.html', {'books': books})
+    return render(request, 'bookList.html', {'books': books, 'year': datetime.datetime.now().year})
 
 def search(request):
     search = request.GET.get('request', '')
@@ -189,7 +190,7 @@ def upload(request):
 
         else:
             form = BookForm()
-    return render(request, 'upload.html', {'form': form})
+    return render(request, 'upload.html', {'form': form, 'year': datetime.datetime.now().year})
 
 def me(request):
     # Страница о пользователе
@@ -199,7 +200,7 @@ def me(request):
     if isLogin in ('none', ''):
         return HttpResponseRedirect('/')
 
-    return render(request, 'profile.html', {'user': user})
+    return render(request, 'profile.html', {'user': user, 'year': datetime.datetime.now().year})
 
 def changepass(request):
     # Смена пароля
