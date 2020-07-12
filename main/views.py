@@ -56,7 +56,7 @@ def email_availability(request):
     # Запрос email с формы
     newNickname = request.POST.get('nickname', '')
     newPassword = request.POST.get('password', '')
-    userEmails = User.objects.all().filter(email = newEmail)
+    userEmails = User.objects.all().filter(email = new_email)
     # Фильтр в БД по email с формы
     if not userEmails:
         response = HttpResponse('True')
@@ -81,11 +81,11 @@ def email_availability(request):
 
 def check_code(request):
     user_code = request.POST.get('code', None)
-    is_registred = request.session.get('reg', None)
+    is_registred = request.session.get('email', None)
     if is_registred:
         user = registrating_users[is_registred]
 
-        if user['verifyCode'] == userCode:
+        if user['verifyCode'] == user_code:
             response = HttpResponse('Right')
             b = User(nickname = user['nickname'], email = user['email'], password = user['password'])
             b.save()
