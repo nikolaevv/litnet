@@ -16,8 +16,8 @@ urlpatterns  =  [
     path('api/book/get', BookSendInfo.as_view()),
     path('login', views.login, name = 'login'),
     path('getnickname', views.get_user_info, name = 'get_user_info'),
-    path('changepassword', views.changePassword, name = 'changePassword'),
-    path('changeemail', views.changeEmail, name = 'changeEmail'),
-    path('verifynewemail', views.verifyNewEmail, name = 'verifyNewEmail'),
-    path('api/book/search', views.searchBook, name = 'searchBook'),
+    path('changepassword', views.change_password, name = 'changePassword'),
+    path('changeemail', views.change_email, name = 'changeEmail'),
+    path('verifynewemail', views.verify_new_email, name = 'verifyNewEmail'),
+    path('api/book/search', views.search_book, name = 'searchBook'),
 ]

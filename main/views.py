@@ -242,6 +242,7 @@ def login(request):
         return HttpResponse('Invalid')
 
 def get_user_info(request):
+    # Получение информации о пользователе
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
@@ -259,16 +260,16 @@ def get_user_info(request):
             response = HttpResponse('Invalid')
             return response
 
-def changePassword(request):
+def change_password(request):
+    # Смена пароля
     if request.method == 'POST':
         form = changePassForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
-            print(email)
             oldPassword = form.cleaned_data['oldPassword']
-            print(oldPassword)
             password = form.cleaned_data['password']
-            print(password)
+            # Сбор данных с формы
+
             users = User.objects.all().filter(email = email).filter(password = oldPassword)
             if users:
                 users[0].password = password
@@ -282,43 +283,43 @@ def changePassword(request):
             response = HttpResponse('Invalid')
             return response
 
-def changeEmail(request):
+def change_email(request):
+    # Смена электронной почты
     if request.method == 'POST':
         form = changeEmailForm(request.POST)
         if form.is_valid():
             oldEmail = form.cleaned_data['oldEmail']
-            print(oldEmail)
             password = form.cleaned_data['password']
-            print(password)
             email = form.cleaned_data['email']
-            print(email)
+            # Сбор формы
+
             users = User.objects.all().filter(email = oldEmail).filter(password = password)
+
             if users:
                 for i in changingEmail:
                     if i['oldEmail'] == oldEmail:
                         changingEmail.remove(i)
-                verifyCode = str(random.randint(100000, 999999))
+
+                verify_code = str(random.randint(100000, 999999))
                 smtpObj = smtplib.SMTP('smtp.gmail.com', 587)
                 smtpObj.starttls()
-                smtpObj.login('litnetpost@gmail.com', 'django13579')
-                smtpObj.sendmail('litnetpost@gmail.com', email, verifyCode)
-                changeData = {'oldEmail': oldEmail,
-                              'email': email,
-                              'verifyCode': verifyCode}
-                changingEmail.append(changeData)
-                print(changingEmail)
-                response = HttpResponse('True')
-                return response
-            else:
-                print('Пользователь не найден')
-                response = HttpResponse('False')
-                return response
-        else:
-            print('Невалидная форма')
-            response = HttpResponse('Invalid')
-            return response
+                smtpObj.login(email_adress, email_pass)
+                smtpObj.sendmail(email_adress, email, verify_code)
+                # Отправка кода подтверждения на почту пользователя
 
-def searchBook(request):
+                change_data = {'oldEmail': oldEmail,
+                               'email': email,
+                               'verifyCode': verify_code
+                }
+
+                changingEmail.append(change_data)
+                return HttpResponse('True')
+            else:
+                return HttpResponse('False')
+            return HttpResponse('Invalid')
+
+def search_book(request):
+    # Поиск по названию или автору книги
     if request.method == 'POST':
         form = searchForm(request.POST)
         if form.is_valid():
@@ -326,35 +327,33 @@ def searchBook(request):
             books = Book.objects.all()
             jsonObject = None
             suitableBooks = []
+
             for book in books:
                 if book.bookname.find(text) != -1 or book.author.find(text) != -1:
                     newArray = {'bookname': book.bookname, 'author': book.author, 'book': book.book}
                     suitableBooks.append(newArray)
-            print(suitableBooks)
-            if len(suitableBooks) == 0:
-                response = HttpResponse('None')
-            else:
-                #jsonObject = json.dumps(suitableBooks)
-                #print(json.loads(jsonObject))
-                response = JsonResponse(suitableBooks, safe=False)
-            return response
-        else:
-            print('Невалидная форма')
-            response = HttpResponse('Invalid')
-            return response
 
-def verifyNewEmail(request):
+            if len(suitableBooks) == 0:
+                return HttpResponse('None')
+            else:
+                return JsonResponse(suitableBooks, safe = False)
+
+        else:
+            return HttpResponse('Invalid')
+
+def verify_new_email(request):
+    # Подтверждение нового адреса электронной почты
     if request.method == 'POST':
         form = verifyForm(request.POST)
         if form.is_valid():
             oldEmail = form.cleaned_data['oldEmail']
-            print(oldEmail)
             verifyCode = form.cleaned_data['verifyCode']
-            print(verifyCode)
             users = User.objects.all().filter(email = oldEmail)
+
             for i in changingEmail:
                 if i['oldEmail'] == oldEmail:
                     user = i
+
             if users:
                 if user['verifyCode'] == verifyCode:
                     users[0].email = user['email']
@@ -362,17 +361,9 @@ def verifyNewEmail(request):
                     response = HttpResponse(user['email'])
                     changingEmail.remove(user)
                     return response
-                else:
-                    response = HttpResponse('False')
-                    return response
-            else:
-                print('Пользователь не найден')
-                response = HttpResponse('False')
-                return response
-        else:
-            print('Невалидная форма')
-            response = HttpResponse('Invalid')
-            return response
+                return HttpResponse('False')
+            return HttpResponse('False')
+        return HttpResponse('Invalid')
 
 class BookSendInfo(generics.ListAPIView):
     serializer_class = BookSerializer
