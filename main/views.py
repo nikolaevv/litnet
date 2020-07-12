@@ -59,7 +59,6 @@ def email_availability(request):
     userEmails = User.objects.all().filter(email = new_email)
     # Фильтр в БД по email с формы
     if not userEmails:
-        response = HttpResponse('True')
         verify_code = str(random.randint(100000, 999999))
         # Генерация кода
         user = {'password': newPassword,
@@ -73,29 +72,24 @@ def email_availability(request):
         smtpObj.starttls()
         smtpObj.login(email_adress, email_pass)
         smtpObj.sendmail(email_adress, new_email, verify_code)
-        return response
-
-    else:
-        response = HttpResponse('False')
-        return response
+        return HttpResponse('True')
+    return HttpResponse('False')
 
 def check_code(request):
     user_code = request.POST.get('code', None)
-    is_registred = request.session.get('email', None)
+    is_registred = request.POST.get('email', None)
     if is_registred:
         user = registrating_users[is_registred]
 
         if user['verifyCode'] == user_code:
             response = HttpResponse('Right')
-            b = User(nickname = user['nickname'], email = user['email'], password = user['password'])
+            b = User(nickname = user['nickname'], email = is_registred, password = user['password'])
             b.save()
-            request.session['user'] = newEmail
-            registratingUsers.remove(user)
+            request.session['user'] = is_registred
+            registrating_users.pop(is_registred, None)
             return response
-
-        else:
-            response = HttpResponse('Not Right')
-            return response
+        return HttpResponse('Not Right')
+    return HttpResponse('Error')
 
 def books(request):
     is_login = request.session.get('user', None)
