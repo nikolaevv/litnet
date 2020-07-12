@@ -152,36 +152,36 @@ def upload(request):
                     fs = FileSystemStorage()
                     filename = fs.save(file_name, book)
                     uploaded_file_url = fs.url(filename)
-                    with open(f'{work_dir}\\main\\templates\\books\\{file_name}', 'wb+') as destination:
+                    with open(f'{work_dir}/main/templates/books/{file_name}', 'wb+') as destination:
                         for chunk in request.FILES['book'].chunks():
                             destination.write(chunk)
 
-                    magicFormat = magic.from_file(books\\' + file_name)
+                    magicFormat = magic.from_file(f'books/{file_name}')
                     # Двухфакторная проверка формата книги и её сохранение
 
                     if magicFormat.find('PDF') == -1 and magicFormat.find('XML') == -1:
-                        os.remove(f'{work_dir}\\main\\templates\\books\\{file_name}')
+                        os.remove(f'{work_dir}/main/templates/books/{file_name}')
                     if photo_format in ('png', 'jpeg', 'jpg'):
                         photo_file = 'author' + str(random.randint(1000000000, 9999999999)) + '.' + photo_format
 
-                        with open(f'main\\static\\image\\{photo_file}', 'wb+') as destination:
+                        with open(f'main/static/image/{photo_file}', 'wb+') as destination:
                             for chunk in request.FILES['authorPhoto'].chunks():
                                   destination.write(chunk)
 
-                        im = Image.open('main\\static\\image\\' + photo_file)
+                        im = Image.open(f'main/static/image/{photo_file}')
                         (width, height) = im.size
                         if width != height:
                             if width > height:
                                 side = (width - height)/2
                                 area = (side, 0, (side + height), height)
                                 im = im.crop(area)
-                                im.save('main\\static\\image\\' + photo_file)
+                                im.save(f'main/static/image/{photo_file}')
                             elif height > width:
                                 side = (height - width)/2
                                 area = (0, side, width, (side + width))
                                 im = im.crop(area)
-                                os.remove(r'C:\YandexDisk\Проекты\litnet\main\static\image\%s' % photo_file)
-                                im.save(('main\\static\\image\\' + photo_file))
+                                os.remove(f'{work_dir}/main/static/image/{photo_file}')
+                                im.save(f'main/static/image/{photo_file}')
                                 # Обработка изображения
 
                         b = Book(bookname = bookname, author = author, style = style, desc = desc, form = realFormatBook, authorPhoto = newAuthorPhotoFile, book = newBookFileName, uploader = isLogin)
