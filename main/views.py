@@ -33,12 +33,15 @@ def main(request):
         form = UserForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
+            print(email)
             password = form.cleaned_data['password']
-            users = User.objects.all().filter(email = email).filter(password = password)
-            if users:
+            print(password)
+            users = User.objects.filter(email = email).filter(password = password).all()
+            print(len(users))
+
+            if len(users) > 0:
                 request.session['user'] = email
-                #response = HttpResponse('True')
-                #return response
+
                 return HttpResponseRedirect('/books')
             else:
                 return HttpResponseRedirect('/')
@@ -96,12 +99,11 @@ def check_code(request):
 
 def books(request):
     is_login = request.session.get('user', None)
-    if is_login:
-        return HttpResponseRedirect('/')
-
-    books = Book.objects.all()
-    # Полученик всех книг
-    return render(request, 'bookList.html', {'books': books, 'year': datetime.datetime.now().year})
+    if is_login != None:
+        books = Book.objects.all()
+        # Полученик всех книг
+        return render(request, 'bookList.html', {'books': books, 'year': datetime.datetime.now().year})
+    return HttpResponseRedirect('/')
 
 def search(request):
     search = request.GET.get('request', '')
@@ -233,6 +235,7 @@ def login(request):
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
+
             users = User.objects.all().filter(email = email).filter(password = password)
             if len(users) > 0:
                 request.session['user'] = email
